@@ -70,7 +70,7 @@ public class OrderQueueTest {
     public void testWhenNoCustomerExistsThenThrowAnException(){
         boolean didThrow = false;
         OrderQueue orderQueue = new OrderQueue();
-        Order order = new Order("CUST00001", "ABC Cafeteria");
+        Order order = new Order("", "");
         order.addPurchase(new Purchase("PROD0004", 450));
         order.addPurchase(new Purchase("PROD0006", 250));
        try{
@@ -83,6 +83,15 @@ public class OrderQueueTest {
     
     
     
+    
+    }
+    @Test
+    public void testWhenNoPurchasesThenThrowAnException(){
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("", "");
+        order.addPurchase(new Purchase("PROD0004", 450));
+        order.addPurchase(new Purchase("PROD0006", 250));
+        orderQueue.add(order);
     
     }
     
