@@ -69,7 +69,7 @@ public class OrderQueueTest {
         assertTrue(Math.abs(result - expResult) < 1000);
     }
     @Test
-    public void testWhenNoCustomerExistsThenThrowAnException(){
+    public void testWhenNoCustomerExistsThenThrowAnException() throws NoCustomerException, NoPurchaseException{
         boolean didThrow = false;
         OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("", "");
@@ -88,10 +88,10 @@ public class OrderQueueTest {
     
     }
     @Test
-    public void testWhenNoPurchasesThenThrowAnException(){
+    public void testWhenNoPurchasesThenThrowAnException() throws NoCustomerException{
         boolean didThrow = false;
         OrderQueue orderQueue = new OrderQueue();
-        Order order = new Order("SomeNormal", "order");
+            Order order = new Order("SomeNormal", "order");
        try{
         orderQueue.add(order);
        }
@@ -103,4 +103,21 @@ public class OrderQueueTest {
     
     }
     
+    @Test
+    public void testGetNextWhenOrderInSystemThenGetNextAvailable() throws NoCustomerException, NoPurchaseException{
+        OrderQueue orderQueue = new OrderQueue();
+         Order order = new Order("SomeValues", "OtherValues"); 
+         order.addPurchase(new Purchase("SomeID", 12));
+         orderQueue.add(order);
+          Order order2 = new Order("SomeValues", "OtherValues"); 
+         order2.addPurchase(new Purchase("SomeiD", 12));
+         orderQueue.add(order2);
+         
+         Order result = orderQueue.next();
+         assertEquals(result , order);
+         assertNull(result.getTimeProcessed());
+         
+         
+        
+    }
 }
