@@ -14,58 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package cpd4414.assign2;
 
-import java.sql.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
- * This class is a wrapper around the Inventory table.
  *
  * @author Len Payne <len.payne@lambtoncollege.ca>
  */
-public class Inventory {
-
-    /**
-     * Utility method for acquiring a valid Database Connection
-     * @return the database Connection object
-     */
-    private static Connection getConnection() {
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException ex) {
-            System.err.println("JDBC Driver Not Found: " + ex.getMessage());
-        }
-
-        try {
-            String jdbc = "jdbc:mysql://ipro.lambton.on.ca/inventory";
-            conn = DriverManager.getConnection(jdbc, "products", "products");
-        } catch (SQLException ex) {
-            System.err.println("Failed to Connect: " + ex.getMessage());
-        }
-        return conn;
+public class InventoryTest {
+    
+    public InventoryTest() {
     }
 
-    /**
-     * Finds out how many of an item are available in the Inventory based on 
-     * its product ID. Returns -1 if there is an error.
-     * @param id - the product ID
-     * @return - the quantity
-     */
-    public static int getQuantityForId(int id) {
-        int quantity = -1;
-        try {
-            Connection conn = getConnection();        
-            String query = "SELECT quantity FROM inventory WHERE id = ?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, id);            
-            ResultSet rs = pstmt.executeQuery();            
-            rs.first();
-            quantity = rs.getInt("quantity");
-            conn.close();
-        } catch (SQLException ex) {
-            System.err.println("Failed to Get Quantity for ID " + id + ": " + ex.getMessage());
-        }
-        return quantity;
+    @Test
+    public void testGetQuantityForIdReturnsErrorForNegativeID() {
+        int id = -100;
+        int expResult = -1;
+        int result = Inventory.getQuantityForId(id);
+        assertEquals(expResult, result);        
     }
+    
+    @Test
+    public void testGetQuantityForIdReturnsValidResultForPositiveID() {
+        int id = 4;
+        int result = Inventory.getQuantityForId(id);
+        assertTrue(result >= 0);        
+    }
+    
 }

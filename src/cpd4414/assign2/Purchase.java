@@ -17,32 +17,31 @@
 
 package cpd4414.assign2;
 
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 /**
  *
  * @author Len Payne <len.payne@lambtoncollege.ca>
  */
-public class Purchase {
-    private String productId;
-    private int quantity;
+public class InventoryTest {
+    
+    public InventoryTest() {
+    }
 
-    public Purchase(String productId, int quantity) {
-        this.productId = productId;
-        this.quantity = quantity;
+    @Test
+    public void testGetQuantityForIdReturnsErrorForNegativeID() {
+        int id = -100;
+        int expResult = -1;
+        int result = Inventory.getQuantityForId(id);
+        assertEquals(expResult, result);        
     }
     
-    public String getProductId() {
-        return productId;
+    @Test
+    public void testGetQuantityForIdReturnsValidResultForPositiveID() {
+        int id = 4;
+        int result = Inventory.getQuantityForId(id);
+        assertTrue(result >= 0);        
     }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    
 }
